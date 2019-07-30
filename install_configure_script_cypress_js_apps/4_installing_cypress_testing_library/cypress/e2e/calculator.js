@@ -1,6 +1,6 @@
 describe('anonymous calculator', () => {
     it('can make calculations', () => {
-        cy.visit('/')
+        cy.visit('http://localhost:8080')
             .getByText(/^1$/)
             .click()
             .getByText(/^\+$/)

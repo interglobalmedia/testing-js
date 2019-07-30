@@ -1,0 +1,36 @@
+describe('anonymous calculator', () => {
+    it('can make calculations', () => {
+        cy.visit('/')
+            .getByText(/^1$/)
+            .click()
+            .getByText(/^\+$/)
+            .click()
+            .getByText(/^2$/)
+            .click()
+            .getByText(/^=$/)
+            .click()
+            .getByTestId('total')
+            .should('have.text', '3')
+    })
+})
+
+describe('authenticated calculator', () => {
+    it('displays the username', () => {
+        cy.createUser().then(user => {
+            cy.visit('/')
+                .getByText(/login/i)
+                .click()
+                .getByLabelText(/username/i)
+                .type(user.username)
+                .getByLabelText(/password/i)
+                .type(user.password)
+                .getByText(/submit/i)
+                .click()
+                .assertLoggedInAs(user)
+                .getByText(/logout/i)
+                .click()
+                .queryByTestId('username-display', { timeout: 300 })
+                .should('not.exist')
+        })
+    })
+})
